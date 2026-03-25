@@ -8,7 +8,9 @@ import (
 	"crypto/rand"
 )
 
-var db *gorm.DB
+var VaultDB *gorm.DB
+var UserDB *gorm.DB
+
 type Data struct {
 	gorm.Model
 	Username string
@@ -18,11 +20,22 @@ type Data struct {
 
 func initDB() {
 	var err error
-	db, err = gorm.Open(sqlite.Open("users.db"), &gorm.Config{})
+	VaultDB, err = gorm.Open(sqlite.Open("GoVaultDB/users.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 }
+
+func initUserDB(Username string) {
+	var err error
+	UserDB, err = gorm.Open(sqlite.Open("GoVaultDB/users/"+Username+".db"), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+}
+
+
+
 const saltLength = 14 //length salt Const cause needs to be a fixed length
 
 func genRandoSalt(saltLength int) []byte {  //func for creating random salt

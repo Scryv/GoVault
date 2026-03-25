@@ -32,7 +32,7 @@ func init() {
 
 func createPost(username string, passwd string, salt string) Data { //func for creating post and also returns it
 	newPost := Data{Username: username, Password: passwd, Salt: salt} //new post with TitleandSlug your input
-	if res := db.Create(&newPost); res.Error != nil { //var of the create func res if res error
+	if res := VaultDB.Create(&newPost); res.Error != nil { //var of the create func res if res error
 	panic(res.Error) //not nil or duplicate it wil give error
 }
 return newPost
@@ -42,10 +42,11 @@ func run(){
 initDB()
 var passwd string //just var for passwd
 var username string //just var for username
-db.AutoMigrate(&Data{}) //autocreates tables and updates schema
+VaultDB.AutoMigrate(&Data{}) //autocreates tables and updates schema
 
 fmt.Println("What username you want to give: ")
 fmt.Scanln(&username)
+initUserDB(username)
 fmt.Println("What password do you want to hash: ") //prompt
 fmt.Scanln(&passwd) //scans answer does stop by space tho also & so it can overwrite var
 

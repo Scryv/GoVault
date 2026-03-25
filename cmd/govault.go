@@ -30,7 +30,7 @@ func init() {
 func printUsers() {
 	var users []Data  //creates empty list called users []Data cause whole table
 
-	result := db.Find(&users) //loads all rows from db into userSlice
+	result := VaultDB.Find(&users) //loads all rows from db into userSlice
 	if result.Error != nil { //result.Error and not err is gorm doesnt return err
 		panic(result.Error) //panic cause if broken state
 	}
@@ -52,7 +52,7 @@ func printUsers() {
 func getUser(username string) (string, string, bool) {
 	var users []Data
 
-	result := db.Find(&users)
+	result := VaultDB.Find(&users)
 	if result.Error != nil {
 		panic(result.Error)
 	}
@@ -76,7 +76,7 @@ func ruun(){
 	var username string
     var passwd string
 	initDB()
-	db.AutoMigrate(&Data{})
+	VaultDB.AutoMigrate(&Data{})
 
     fmt.Println("Login: ")
     fmt.Scanln(&username)
