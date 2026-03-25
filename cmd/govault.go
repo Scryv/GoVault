@@ -48,30 +48,6 @@ func printUsers() {
 
 	fmt.Println(csvData) //prints csv data
 }
-
-func getUser(username string) (string, string, bool) {
-	var users []Data
-
-	result := VaultDB.Find(&users)
-	if result.Error != nil {
-		panic(result.Error)
-	}
-
-	for _, user := range users {
-		if user.Username == username {
-			return user.Password, user.Salt, true
-		}
-	}
-
-	return "", "", false
-}
-func doPasswdMatch(hashedPassword, currPassword string,
-	salt []byte) bool {
-	var currPasswordHash = hashPasswd(currPassword, salt)
-
-	return hashedPassword == currPasswordHash
-}
-
 func ruun(){
 	var username string
     var passwd string
