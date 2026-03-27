@@ -6,6 +6,9 @@ import (
 		"crypto/sha512"
 	"encoding/hex"
 	"crypto/rand"
+	   "crypto/aes"
+   "crypto/cipher"
+   "io"
 )
 
 var VaultDB *gorm.DB
@@ -93,4 +96,53 @@ func AddData(username string, passwd string, email string,) UserData{
 		panic(res.Error)
 	}
 	return AddData
+}
+
+func encrypt(plaintext []byte, key []byte) (string, error){ //returns enc string and err
+   block, err := aes.NewCipher(key) //telling ais the cipherkey
+   if err != nil {
+       return "", err
+   }
+   gcm, err := cipher.NewGCM(block) //Makes ready for getting enc with key
+   if err != nil {
+      return "", err
+   }
+   nonce := make([]byte, gcm.NonceSize()) //uses random number so even same data will be diff
+    if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+       return "", err
+     }
+     ciphertext := gcm.Seal(nonce, nonce, plaintext, nil) //encrypts
+     enc := hex.EncodeToString(ciphertext) //makes it readable
+     return enc, nil
+}
+func decrypt(enc string, key []byte) (string, error) {
+	decodedCipherText, err := hex.DecodeString(enc) //decodes the encryption
+	if err != nil {
+		return "", err
+	}
+
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+
+	gcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	nonceSize := gcm.NonceSize()
+	if len(decodedCipherText) < nonceSize {
+		return "", err
+	}
+
+	nonce := decodedCipherText[:nonceSize]
+	ciphertext := decodedCipherText[nonceSize:]
+
+	decryptedData, err := gcm.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		return "", err
+	}
+
+	return string(decryptedData), nil
 }

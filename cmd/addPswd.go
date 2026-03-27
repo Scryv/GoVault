@@ -57,12 +57,18 @@ func ruuun(){
        fmt.Scanln(&choice)
        switch choice {
        case 1:
+       	   key := make([]byte, 32)
            fmt.Println("Username: ")
            fmt.Scanln(&AddUser)
            fmt.Println("Password: ")
            fmt.Scanln(&AddPasswd)
-           fmt.Println(AddUser, AddPasswd)
+           AddUserByte := []byte(AddUser)
+           AddPasswdByte := []byte(AddPasswd)
+           AddUser, _ = encrypt(AddUserByte, key)
+           AddPasswd, _ = encrypt(AddPasswdByte, key)
            AddData(AddUser, AddPasswd, "")
+           //AddData(AddUserByte, AddPasswdByte, "")
+           
            
            
        case 2:
