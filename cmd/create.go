@@ -32,21 +32,23 @@ func init() {
 func run(){
 var passwd string //just var for passwd
 var username string //just var for username
+var masterPasswd string
 
-fmt.Println("What username you want to give: ")
+fmt.Println("New users Username: ")
 fmt.Scanln(&username)
 initUserDB(username)
 UserDB.AutoMigrate(&UserData{}) //autocreates tables and updates schema
-fmt.Println("What password do you want to hash: ") //prompt
+fmt.Println("new users Password: ") //prompt
 fmt.Scanln(&passwd) //scans answer does stop by space tho also & so it can overwrite var
-
+fmt.Println("New users Master Password(for displaying passwds)")
+fmt.Scanln(&masterPasswd)
 initDB()
 VaultDB.AutoMigrate(&Data{}) //autocreates tables and updates schema
 
 salt := genRandoSalt(saltLength) //call and assign genSalt
+masterSalt := genRandoSalt(saltLength)
 hashedpasswd := hashPasswd(passwd, salt) //call and asign hashPasswd
-
-createPost(username, hashedpasswd, hex.EncodeToString(salt))
+hashedMasterPasswd := hashPasswd(masterPasswd, masterSalt)
+createPost(username, hashedpasswd, hex.EncodeToString(salt), hashedMasterPasswd, hex.EncodeToString(masterSalt))
 fmt.Printf("User %s has been created\n", username)
-fmt.Println("With this salt: ", hex.EncodeToString(salt)) //Prints salt used
 }

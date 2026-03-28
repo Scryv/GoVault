@@ -16,9 +16,11 @@ var UserDB *gorm.DB
 
 type Data struct {
 	gorm.Model
-	Username string
-	Password string
-	Salt     string `gorm:"uniqueIndex:idx_salt"`
+	Username     string
+	Password     string
+	Salt         string //gorm:"uniqueIndex:idx_salt"
+	MasterPasswd string
+	MasterSalt   string
 }
 type UserData struct {
 	gorm.Model
@@ -44,8 +46,7 @@ func initUserDB(Username string) {
 
 
 
-const saltLength = 14 //length salt Const cause needs to be a fixed length
-
+const saltLength = 16 //length salt Const cause needs to be a fixed length
 func genRandoSalt(saltLength int) []byte {  //func for creating random salt
 	var salt = make([]byte, saltLength) // makes a byte slice variable called salt
 	rand.Read(salt) //reads the slice and fully changes it and ads its own rando value
@@ -82,8 +83,8 @@ func doPasswdMatch(hashedPassword, currPassword string,
 	return hashedPassword == currPasswordHash
 }
 
-func createPost(username string, passwd string, salt string) Data { //func for creating post and also returns it
-	newPost := Data{Username: username, Password: passwd, Salt: salt} //new post with TitleandSlug your input
+func createPost(username string, passwd string, salt string, masterPasswd string, masterSalt string) Data { //func for creating post and also returns it
+	newPost := Data{Username: username, Password: passwd, Salt: salt, MasterPasswd: masterPasswd, MasterSalt: masterSalt} //new post with TitleandSlug your input
 	if res := VaultDB.Create(&newPost); res.Error != nil { //var of the create func res if res error
 	panic(res.Error) //not nil or duplicate it wil give error
 }
