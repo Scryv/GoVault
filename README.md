@@ -15,9 +15,7 @@ a **random** salt and hash the password together with that salt then save it to 
 Will ask for a **login** and **password** then will search the **SQLite** database for your **username** then take its hash and hash your **password** with it and if its a match it will let you log in
 and display the other database with stored **accounts** and **passwords** that will be unlocked by your **masterPasswd**
 
-
-## Working on adding
-#### Custom DB per user
+### Database structure
 <pre>
 GoVaultDB/<br/>
 ├─ Users/<br/>
@@ -26,6 +24,7 @@ GoVaultDB/<br/>
 │  ├─ admin.db<br/>
 ├─ users.db<br/>
 </pre>
+## Working on adding
 
 #### Adding master password
 
