@@ -17,16 +17,11 @@ Will ask for a **login** and **password** then will search the **SQLite** databa
 and display the other database with stored **accounts** and **passwords** that will be unlocked by your **masterPasswd**
 
 ### Database structure
-<pre>
-GoVaultDB/<br/>
-├─ Users/<br/>
-│  ├─ jens.db<br/>
-│  ├─ lazer.db<br/>
-│  ├─ admin.db<br/>
-├─ users.db<br/>
-</pre>
+<img src="https://github.com/Scryv/sm-adobe-graphic-stuff/blob/main/pictureOfTools/dbstorage.png?raw=true">
+
 ## Working on adding
 
 #### Adding master password
-
+#### Logs
 #### Password/Email account adder to DB
+#### Maybe TUI with bubble tea
