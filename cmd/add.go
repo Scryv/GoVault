@@ -10,7 +10,7 @@ import (
 
 // addPswdCmd represents the addPswd command
 var addPswdCmd = &cobra.Command{
-	Use:   "addPswd",
+	Use:   "add",
 	Short: "Command to add Account/Password",
 	Long: `This command makes you able to add accounts usernames and passwords to your database
 		encrypted ofcourse :)`,
