@@ -57,11 +57,16 @@ And enjoy :)
 
 ## Features
 > The base version does have a default account with all credentials being **admin**
-### Create `go run main.go create`
+
+### Info about tool `GoVault`
+will just display info about tool and all the commands there are available with
+a tiny explanation about each command
+
+### Create `GoVault create`
 will ask for an **username** and a **password** and will take the password generate 
 a **random** salt and hash the password together with that salt then save it to a local **SQLite** database
 
-### addPswd `go run main.go addPswd`
+### add `GoVault add`
 Will ask for **Username** and your accounts **password** after auth it will ask what option so 
 1. Username-Password
 2. Email-Password
@@ -69,7 +74,7 @@ Will ask for **Username** and your accounts **password** after auth it will ask 
 
 you will fill those in and it will encrypt it and store it in your user his db
 
-### govault `go run main.go govault`
+### govault `GoVault govault`
 Will ask for a **login** and **password** then will search the **SQLite** database for your **username** then take its hash and hash your **password** with it and if its a match it will let you log in
 and display the other database with stored **accounts** and **passwords** that will be unlocked by your **masterPasswd**
 
