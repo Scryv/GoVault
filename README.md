@@ -64,7 +64,5 @@ and display the other database with stored **accounts** and **passwords** that w
 
 ## Working on adding
 
-#### Adding master password
 #### Logs
-#### Password/Email account adder to DB
 #### Maybe TUI with bubble tea
