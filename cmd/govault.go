@@ -8,6 +8,9 @@ import (
 	"github.com/spf13/cobra"
 		"encoding/hex"
 		"crypto/sha256"
+			"text/tabwriter"
+			"os"
+			
 )
 
 
@@ -25,6 +28,7 @@ func init() {
 }
 
 
+
 func printUsers(password string) {
 	var users []UserData  //creates empty list called users []Data cause whole table
     hash := sha256.Sum256([]byte(password))
@@ -34,7 +38,9 @@ func printUsers(password string) {
 	}
     key := hash[:]
 	csvData := "" //creates variable called csvData
-
+	w := tabwriter.NewWriter(os.Stdout, 1, 1, 2, ' ', 0) //values for tab template stylet thingy
+    fmt.Fprintln(w, "Username\tPassword\tEmail")
+	fmt.Fprintln(w, "--------\t--------\t-----")
 	for _, user := range users { //loops trough every row
 		UserUser := user.Username
 		UserPasswd := user.Password
@@ -43,14 +49,11 @@ func printUsers(password string) {
 		DecUser, _ := decrypt(UserUser, key)
 		DecPasswd, _ := decrypt(UserPasswd, key)
 		DecEmail, _ := decrypt(UserEmail, key)
-		csvData += fmt.Sprintf( //appends all these looped to csvData
-			"%s,%s,%s\n",  //Sprintf cause can be saved in var
-			DecUser,
-			DecPasswd,
-			DecEmail,
-		)
-	}
+		fmt.Fprintf(w, "%s\t%s\t%s\n", DecUser, DecPasswd, DecEmail)//\t is there for spacings
 
+
+	}
+    w.Flush()
 	fmt.Println(csvData) //prints csv data
 }
 func ruun(){
@@ -85,7 +88,6 @@ func ruun(){
        if masterMatch {
        initUserDB(username)
        UserDB.AutoMigrate(&UserData{})
-       fmt.Println("USERNAME | PASSWORD | EMAIL")
        printUsers(passwd)
        } else {
        	fmt.Println("Wrong Master Password")
