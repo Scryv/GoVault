@@ -39,9 +39,10 @@ func printUsers(password string) {
     key := hash[:]
 	csvData := "" //creates variable called csvData
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 2, ' ', 0) //values for tab template stylet thingy
-    fmt.Fprintln(w, "Username\tPassword\tEmail")
-	fmt.Fprintln(w, "--------\t--------\t-----")
+    fmt.Fprintln(w, "Service\tUsername\tPassword\tEmail")
+	fmt.Fprintln(w, "-------\t--------\t--------\t-----")
 	for _, user := range users { //loops trough every row
+		UserService := user.Service
 		UserUser := user.Username
 		UserPasswd := user.Password
 		UserEmail := user.Email
@@ -49,7 +50,7 @@ func printUsers(password string) {
 		DecUser, _ := decrypt(UserUser, key)
 		DecPasswd, _ := decrypt(UserPasswd, key)
 		DecEmail, _ := decrypt(UserEmail, key)
-		fmt.Fprintf(w, "%s\t%s\t%s\n", DecUser, DecPasswd, DecEmail)//\t is there for spacings
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", UserService, DecUser, DecPasswd, DecEmail)//\t is there for spacings
 
 
 	}

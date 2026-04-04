@@ -28,6 +28,7 @@ type Data struct {
 }
 type UserData struct {
 	gorm.Model
+	Service string
 	Username string
 	Password string
 	Email    string
@@ -152,8 +153,8 @@ func createPost(username string, passwd string, salt string, masterPasswd string
 return newPost
 }
 
-func AddData(username string, passwd string, email string,) UserData{
-	AddData := UserData{Username: username, Password: passwd, Email: email}
+func AddData(service string, username string, passwd string, email string,) UserData{
+	AddData := UserData{Service: service, Username: username, Password: passwd, Email: email}
 	if res := UserDB.Create(&AddData); res.Error != nil {
 		panic(res.Error)
 	}

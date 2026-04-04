@@ -48,6 +48,7 @@ func ruuun(){
        var AddPasswd string
        var AddUser string
        var AddEmail string
+       var service string
        key := hash[:]
        
        initUserDB(username)
@@ -57,6 +58,8 @@ func ruuun(){
        fmt.Scanln(&choice)
        switch choice {
        case 1:
+           fmt.Println("What Website/App/Service: ")
+       	   fmt.Scanln(&service)
            fmt.Println("Username: ")
            fmt.Scanln(&AddUser)
            fmt.Println("Password: ")
@@ -65,11 +68,13 @@ func ruuun(){
            AddPasswdByte := []byte(AddPasswd)
            AddUser, _ = encrypt(AddUserByte, key)
            AddPasswd, _ = encrypt(AddPasswdByte, key)
-           AddData(AddUser, AddPasswd, "")
+           AddData(service, AddUser, AddPasswd, "")
            
            
            
        case 2:
+       	    fmt.Println("What Website/App/Service: ")
+       	    fmt.Scanln(&service)
        	    fmt.Println("Email: ")
        	    fmt.Scanln(&AddEmail)
        	    fmt.Println("Password: ")
@@ -78,8 +83,10 @@ func ruuun(){
        	    AddEmailByte := []byte(AddEmail)
        	    AddPasswd, _ = encrypt(AddPasswdByte, key)
        	    AddEmail, _ = encrypt(AddEmailByte, key)
-       	    AddData("", AddPasswd, AddEmail)
+       	    AddData(service, "", AddPasswd, AddEmail)
        case 3:
+       	   fmt.Println("What Website/App/Service: ")
+       	   fmt.Scanln(&service)
            fmt.Println("Email: ")
            fmt.Scanln(&AddEmail)
            fmt.Println("Username: ")
@@ -92,7 +99,7 @@ func ruuun(){
            AddUser, _ = encrypt(AddUserByte, key)
            AddPasswd, _ = encrypt(AddPasswdByte, key)
            AddEmail, _ = encrypt(AddEmailByte, key)
-           AddData(AddUser, AddPasswd, AddEmail)
+           AddData(service, AddUser, AddPasswd, AddEmail)
        default:
        	 fmt.Println("Please choose an existing option")
        }
