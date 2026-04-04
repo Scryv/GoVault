@@ -46,6 +46,15 @@
 </pre>
 Database folder gets stored in /home/user/
 
+## How to install
+1. `git clone https://github.com/Scryv/GoVault.git`
+2. `cd GoVault`
+3. `chmod +x install.sh`
+4. `sudo ./install.sh`
+5. `GoVault`<br>
+
+And enjoy :)
+
 ## Features
 > The base version does have a default account with all credentials being **admin**
 ### Create `go run main.go create`
