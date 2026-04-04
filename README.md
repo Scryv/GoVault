@@ -44,7 +44,9 @@
 │ - Hashing & Salting       │  │ - AES Encryption/Decryption │
 └───────────────────────────┘  └─────────────────────────────┘
 </pre>
+
 ## Features
+> The base version does have a default account with all credentials being **admin**
 ### Create `go run main.go create`
 will ask for an **username** and a **password** and will take the password generate 
 a **random** salt and hash the password together with that salt then save it to a local **SQLite** database
