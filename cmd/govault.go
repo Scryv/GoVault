@@ -7,6 +7,7 @@ import (
 	_"gorm.io/gorm"
 	"github.com/spf13/cobra"
 		"encoding/hex"
+		"crypto/sha256"
 )
 
 
@@ -24,22 +25,29 @@ func init() {
 }
 
 
-func printUsers() {
-	var users []Data  //creates empty list called users []Data cause whole table
-
-	result := VaultDB.Find(&users) //loads all rows from db into userSlice
+func printUsers(password string) {
+	var users []UserData  //creates empty list called users []Data cause whole table
+    hash := sha256.Sum256([]byte(password))
+	result := UserDB.Find(&users) //loads all rows from db into userSlice
 	if result.Error != nil { //result.Error and not err is gorm doesnt return err
 		panic(result.Error) //panic cause if broken state
 	}
-
+    key := hash[:]
 	csvData := "" //creates variable called csvData
 
 	for _, user := range users { //loops trough every row
+		UserUser := user.Username
+		UserPasswd := user.Password
+		UserEmail := user.Email
+
+		DecUser, _ := decrypt(UserUser, key)
+		DecPasswd, _ := decrypt(UserPasswd, key)
+		DecEmail, _ := decrypt(UserEmail, key)
 		csvData += fmt.Sprintf( //appends all these looped to csvData
 			"%s,%s,%s\n",  //Sprintf cause can be saved in var
-			user.Username,
-			user.Password,
-			user.Salt,
+			DecUser,
+			DecPasswd,
+			DecEmail,
 		)
 	}
 
@@ -48,6 +56,7 @@ func printUsers() {
 func ruun(){
 	var username string
     var passwd string
+    var MasterPasswd string
 	initDB()
 	VaultDB.AutoMigrate(&Data{})
 
@@ -55,6 +64,8 @@ func ruun(){
     fmt.Scanln(&username)
     fmt.Println("Password: ")
     fmt.Scanln(&passwd)
+    fmt.Println("Give your master Passwd")
+    fmt.Scanln(&MasterPasswd)
 
 	storedHash, storedSalt, found := getUser(username)
 	saltBytes, _ := hex.DecodeString(storedSalt)
@@ -62,11 +73,23 @@ func ruun(){
 		fmt.Println("User wasnt found ")
 		return
 	}
+    storedMasterHash, storedMasterSalt, masterFound := getMasterUser(username)
+    masterSaltBytes, _ := hex.DecodeString(storedMasterSalt)
+    if !masterFound {
+    	fmt.Println("User Not found")
+    }
 
+    masterMatch := doPasswdMatch(storedMasterHash, MasterPasswd, masterSaltBytes)
     match := doPasswdMatch(storedHash, passwd, saltBytes)
     if match {
-       fmt.Println("USERNAME | HASHED_PASSWORD | SALT")
-       printUsers()
+       if masterMatch {
+       initUserDB(username)
+       UserDB.AutoMigrate(&UserData{})
+       fmt.Println("USERNAME | PASSWORD | EMAIL")
+       printUsers(passwd)
+       } else {
+       	fmt.Println("Wrong Master Password")
+       }
     } else {
        fmt.Println("Invalid passwd")
     }

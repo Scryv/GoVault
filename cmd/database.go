@@ -76,6 +76,24 @@ func getUser(username string) (string, string, bool) {
 
 	return "", "", false
 }
+
+func getMasterUser(username string) (string, string, bool) {
+	var users []Data
+
+	result := VaultDB.Find(&users)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+
+	for _, user := range users {
+		if user.Username == username {
+			return user.MasterPasswd, user.MasterSalt, true
+		}
+	}
+
+	return "", "", false
+}
+
 func doPasswdMatch(hashedPassword, currPassword string,
 	salt []byte) bool {
 	var currPasswordHash = hashPasswd(currPassword, salt)
