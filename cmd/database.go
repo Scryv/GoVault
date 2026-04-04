@@ -9,6 +9,10 @@ import (
 	   "crypto/aes"
    "crypto/cipher"
    "io"
+   "os"
+   	"os/user"
+	"path/filepath"
+
 )
 
 var VaultDB *gorm.DB
@@ -30,22 +34,61 @@ type UserData struct {
 }
 func initDB() {
 	var err error
-	VaultDB, err = gorm.Open(sqlite.Open("GoVaultDB/users.db"), &gorm.Config{})
+	currentUser, err := user.Current()
+	if err != nil {
+		panic(err)
+		return
+	}
+	checkFolder()
+    VaultDBFP := filepath.Join(currentUser.HomeDir, "GoVaultDB", "users.db")
+	VaultDB, err = gorm.Open(sqlite.Open(VaultDBFP), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 }
 
-func initUserDB(Username string) {
+func initUserDB(username string) {
+
+	checkFolder()
+	usersDir := checkUserFolder()
+	UserDBFP := filepath.Join(usersDir, username+".db")
+
 	var err error
-	UserDB, err = gorm.Open(sqlite.Open("GoVaultDB/users/"+Username+".db"), &gorm.Config{})
+	UserDB, err = gorm.Open(sqlite.Open(UserDBFP), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 }
 
 
+func checkFolder(){
+    currentUser, err := user.Current()
+	if err != nil {
+		panic(err)
+		return
+	}
 
+	dirPath := filepath.Join(currentUser.HomeDir, "GoVaultDB")
+
+	if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+		err := os.MkdirAll(dirPath, 0755)
+		if err != nil {
+			panic(err)
+			return
+		}
+	}
+}
+func checkUserFolder() string {
+	currentUser, _ := user.Current()
+	dirPath := filepath.Join(currentUser.HomeDir, "GoVaultDB", "Users")
+	if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+		err := os.MkdirAll(dirPath, 0755)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return dirPath
+}
 const saltLength = 16 //length salt Const cause needs to be a fixed length
 func genRandoSalt(saltLength int) []byte {  //func for creating random salt
 	var salt = make([]byte, saltLength) // makes a byte slice variable called salt
@@ -165,3 +208,4 @@ func decrypt(enc string, key []byte) (string, error) {
 
 	return string(decryptedData), nil
 }
+

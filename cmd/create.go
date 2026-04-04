@@ -27,6 +27,7 @@ func init() {
 
 
 func run(){
+checkFolder()
 var passwd string //just var for passwd
 var username string //just var for username
 var masterPasswd string

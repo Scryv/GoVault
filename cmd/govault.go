@@ -57,6 +57,7 @@ func printUsers(password string) {
 	fmt.Println(csvData) //prints csv data
 }
 func ruun(){
+	checkFolder()
 	var username string
     var passwd string
     var MasterPasswd string
