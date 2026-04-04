@@ -44,6 +44,7 @@
 │ - Hashing & Salting       │  │ - AES Encryption/Decryption │
 └───────────────────────────┘  └─────────────────────────────┘
 </pre>
+Database folder gets stored in /home/user/
 
 ## Features
 > The base version does have a default account with all credentials being **admin**
