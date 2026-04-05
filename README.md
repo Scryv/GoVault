@@ -73,7 +73,7 @@ Will ask for **Username** and your accounts **password** after auth it will ask 
 
 you will fill those in and it will encrypt it and store it in your user his db
 
-### govault `GoVault govault`
+### govault `GoVault vault`
 Will ask for a **login** and **password** then will search the **SQLite** database for your **username** then take its hash and hash your **password** with it and if its a match it will let you log in
 and display the other database with stored **accounts** and **passwords** that will be unlocked by your **masterPasswd**
 
