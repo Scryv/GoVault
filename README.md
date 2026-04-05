@@ -28,7 +28,7 @@
       │                                 │
       │                                 ▼
       │                       ┌────────────────┐
-      │                       │ addPaswd.go    │
+      │                       │ add.go    │
       │                       │ (Add accounts/ │
       │                       │ passwords)     │
       │                       └──────┬─────────┘
