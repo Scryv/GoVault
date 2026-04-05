@@ -56,7 +56,6 @@ Database folder gets stored in /home/user/
 And enjoy :)
 
 ## Features
-> The base version does have a default account with all credentials being **admin**
 
 ### Info about tool `GoVault`
 will just display info about tool and all the commands there are available with
