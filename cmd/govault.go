@@ -1,23 +1,19 @@
-
 package cmd
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
-	_"github.com/glebarez/sqlite"
-	_"gorm.io/gorm"
 	"github.com/spf13/cobra"
-		"encoding/hex"
-		"crypto/sha256"
-			"text/tabwriter"
-			"os"
-			
+	"golang.org/x/term"
+	"os"
+	"text/tabwriter"
 )
-
 
 var govaultCmd = &cobra.Command{
 	Use:   "govault",
 	Short: "Command that runs govault",
-	Long: `This Command runs govault it will ask for login and password and when logged in will display the stored passwords with email or username`,
+	Long:  `This Command runs govault it will ask for login and password and when logged in will display the stored passwords with email or username`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ruun()
 	},
@@ -27,19 +23,17 @@ func init() {
 	rootCmd.AddCommand(govaultCmd)
 }
 
-
-
 func printUsers(password string) {
-	var users []UserData  //creates empty list called users []Data cause whole table
-    hash := sha256.Sum256([]byte(password))
+	var users []UserData //creates empty list called users []Data cause whole table
+	hash := sha256.Sum256([]byte(password))
 	result := UserDB.Find(&users) //loads all rows from db into userSlice
-	if result.Error != nil { //result.Error and not err is gorm doesnt return err
+	if result.Error != nil {      //result.Error and not err is gorm doesnt return err
 		panic(result.Error) //panic cause if broken state
 	}
-    key := hash[:]
-	csvData := "" //creates variable called csvData
+	key := hash[:]
+	csvData := ""                                        //creates variable called csvData
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 2, ' ', 0) //values for tab template stylet thingy
-    fmt.Fprintln(w, "Service\tUsername\tPassword\tEmail")
+	fmt.Fprintln(w, "Service\tUsername\tPassword\tEmail")
 	fmt.Fprintln(w, "-------\t--------\t--------\t-----")
 	for _, user := range users { //loops trough every row
 		UserService := user.Service
@@ -50,27 +44,32 @@ func printUsers(password string) {
 		DecUser, _ := decrypt(UserUser, key)
 		DecPasswd, _ := decrypt(UserPasswd, key)
 		DecEmail, _ := decrypt(UserEmail, key)
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", UserService, DecUser, DecPasswd, DecEmail)//\t is there for spacings
-
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", UserService, DecUser, DecPasswd, DecEmail) //\t is there for spacings
 
 	}
-    w.Flush()
+	w.Flush()
 	fmt.Println(csvData) //prints csv data
 }
-func ruun(){
+func ruun() {
 	checkFolder()
-	var username string
-    var passwd string
-    var MasterPasswd string
 	initDB()
 	VaultDB.AutoMigrate(&Data{})
+	var username string
 
-    fmt.Println("Login: ")
-    fmt.Scanln(&username)
-    fmt.Println("Password: ")
-    fmt.Scanln(&passwd)
-    fmt.Println("Give your master Passwd")
-    fmt.Scanln(&MasterPasswd)
+	fmt.Println("Login: ")
+	fmt.Scanln(&username)
+	fmt.Println("Password: ")
+	passwd, err := term.ReadPassword(int(os.Stdin.Fd()))
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Give your master Passwd")
+	MasterPasswd, err := term.ReadPassword(int(os.Stdin.Fd()))
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 
 	storedHash, storedSalt, found := getUser(username)
 	saltBytes, _ := hex.DecodeString(storedSalt)
@@ -78,23 +77,23 @@ func ruun(){
 		fmt.Println("User wasnt found ")
 		return
 	}
-    storedMasterHash, storedMasterSalt, masterFound := getMasterUser(username)
-    masterSaltBytes, _ := hex.DecodeString(storedMasterSalt)
-    if !masterFound {
-    	fmt.Println("User Not found")
-    }
+	storedMasterHash, storedMasterSalt, masterFound := getMasterUser(username)
+	masterSaltBytes, _ := hex.DecodeString(storedMasterSalt)
+	if !masterFound {
+		fmt.Println("User Not found")
+	}
 
-    masterMatch := doPasswdMatch(storedMasterHash, MasterPasswd, masterSaltBytes)
-    match := doPasswdMatch(storedHash, passwd, saltBytes)
-    if match {
-       if masterMatch {
-       initUserDB(username)
-       UserDB.AutoMigrate(&UserData{})
-       printUsers(passwd)
-       } else {
-       	fmt.Println("Wrong Master Password")
-       }
-    } else {
-       fmt.Println("Invalid passwd")
-    }
+	masterMatch := doPasswdMatch(storedMasterHash, string(MasterPasswd), masterSaltBytes)
+	match := doPasswdMatch(storedHash, string(passwd), saltBytes)
+	if match {
+		if masterMatch {
+			initUserDB(username)
+			UserDB.AutoMigrate(&UserData{})
+			printUsers(string(passwd))
+		} else {
+			fmt.Println("Wrong Master Password")
+		}
+	} else {
+		fmt.Println("Invalid passwd")
+	}
 }

@@ -1,14 +1,11 @@
-
 package cmd
 
 import (
-	"fmt"
-    _"crypto/rand"
-	_"crypto/sha512"
 	"encoding/hex"
+	"fmt"
 	"github.com/spf13/cobra"
-	_"gorm.io/gorm" //lets me use go structs in plaats van sql
-	_"github.com/glebarez/sqlite"
+	"golang.org/x/term"
+	"os"
 )
 
 var createCmd = &cobra.Command{
@@ -25,28 +22,33 @@ func init() {
 	rootCmd.AddCommand(createCmd)
 }
 
+func run() {
+	checkFolder()
+	var username string
 
-func run(){
-checkFolder()
-var passwd string //just var for passwd
-var username string //just var for username
-var masterPasswd string
+	fmt.Println("New users Username: ")
+	fmt.Scanln(&username)
+	initUserDB(username)
+	UserDB.AutoMigrate(&UserData{})     //autocreates tables and updates schema
+	fmt.Println("new users Password: ") //prompt
+	passwd, err := term.ReadPassword(int(os.Stdin.Fd()))
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("New users Master Password(for displaying passwds)")
+	masterPasswd, err := term.ReadPassword(int(os.Stdin.Fd()))
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	initDB()
+	VaultDB.AutoMigrate(&Data{}) //autocreates tables and updates schema
 
-fmt.Println("New users Username: ")
-fmt.Scanln(&username)
-initUserDB(username)
-UserDB.AutoMigrate(&UserData{}) //autocreates tables and updates schema
-fmt.Println("new users Password: ") //prompt
-fmt.Scanln(&passwd) //scans answer does stop by space tho also & so it can overwrite var
-fmt.Println("New users Master Password(for displaying passwds)")
-fmt.Scanln(&masterPasswd)
-initDB()
-VaultDB.AutoMigrate(&Data{}) //autocreates tables and updates schema
-
-salt := genRandoSalt(saltLength) //call and assign genSalt
-masterSalt := genRandoSalt(saltLength)
-hashedpasswd := hashPasswd(passwd, salt) //call and asign hashPasswd
-hashedMasterPasswd := hashPasswd(masterPasswd, masterSalt)
-createPost(username, hashedpasswd, hex.EncodeToString(salt), hashedMasterPasswd, hex.EncodeToString(masterSalt))
-fmt.Printf("User %s has been created\n", username)
+	salt := genRandoSalt(saltLength) //call and assign genSalt
+	masterSalt := genRandoSalt(saltLength)
+	hashedpasswd := hashPasswd(string(passwd), salt) //call and asign hashPasswd
+	hashedMasterPasswd := hashPasswd(string(masterPasswd), masterSalt)
+	createPost(username, hashedpasswd, hex.EncodeToString(salt), hashedMasterPasswd, hex.EncodeToString(masterSalt))
+	fmt.Printf("User %s has been created\n", username)
 }
