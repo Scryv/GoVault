@@ -16,7 +16,7 @@ var addPswdCmd = &cobra.Command{
 	Long: `This command makes you able to add accounts usernames and passwords to your database
 		encrypted ofcourse :)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ruuun()
+		runAdd()
 	},
 }
 
@@ -24,7 +24,7 @@ func init() {
 	rootCmd.AddCommand(addPswdCmd)
 }
 
-func ruuun() {
+func runAdd() {
 	var username string
 	initDB()
 	VaultDB.AutoMigrate(&Data{})
