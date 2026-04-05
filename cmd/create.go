@@ -14,7 +14,7 @@ var createCmd = &cobra.Command{
 	Long: `This is the command that adds a user to the User.db database so it can access the
 		passwd.db database hashed the password with salt and saves it in User.db`,
 	Run: func(cmd *cobra.Command, args []string) {
-		run()
+		runCreate()
 	},
 }
 
@@ -22,7 +22,7 @@ func init() {
 	rootCmd.AddCommand(createCmd)
 }
 
-func run() {
+func runCreate() {
 	checkFolder()
 	var username string
 
