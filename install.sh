@@ -15,6 +15,6 @@ chmod +x GoVault
 echo "made GoVault Executable"
 sudo mv GoVault /usr/local/bin/
 echo "Copied GoVault to /user/local/bin"
-echo "Install is finished try it out by typing the command gv!"
+echo "Install is finished try it out by typing the command GoVault!"
 
 
