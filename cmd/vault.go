@@ -11,11 +11,11 @@ import (
 )
 
 var govaultCmd = &cobra.Command{
-	Use:   "govault",
+	Use:   "vault",
 	Short: "Command that runs govault",
 	Long:  `This Command runs govault it will ask for login and password and when logged in will display the stored passwords with email or username`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ruun()
+		runVault()
 	},
 }
 
@@ -50,7 +50,7 @@ func printUsers(password string) {
 	w.Flush()
 	fmt.Println(csvData) //prints csv data
 }
-func ruun() {
+func runVault() {
 	checkFolder()
 	initDB()
 	VaultDB.AutoMigrate(&Data{})
