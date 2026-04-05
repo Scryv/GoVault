@@ -1,8 +1,8 @@
 # GoVault
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/Scryv/GoVault/blob/main/LICENSE)
 
-**GoVault** will be a Self Hosted application for storing passwords. It will be made in Golang and Sqlite and the liberaries Gorm and Gin. 
-> Right now i am focusing on the Cobra CLI version Gin frontend comes later.
+**GoVault** will be a Self Hosted application for storing passwords. It will be made in Golang and Sqlite and the liberaries Gorm and later on Gin with a web interface. 
+> Right now i am focusing on the Cobra CLI version Gin with frontend comes later.
 <img src="https://www.sdgscryv.xyz/images/images/GoVault.jpg" width="600px">
 
 ---
