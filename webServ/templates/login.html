@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoVault | Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+
+            <div class="col-lg-6">
+              <div class="card-body p-md-5">
+
+                <div class="text-center">
+                  <img src="https://github.com/Scryv/GoVault/blob/7c2bf2c2e0bb6e2726722a580de13ba0ab682497/images/GoVault.jpg?raw=true"
+                       width="243px" alt="logo">
+                  <h4 class="mt-3 mb-4">Welcome To GoVault WebUI</h4>
+                </div>
+
+                <form hx-post="/login" method="POST">
+                  <p>Please login to your account</p>
+
+                  <div class="mb-3">
+                    <input type="text" class="form-control" name="username"  placeholder="Username" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <input type="password" class="form-control" name="password"  placeholder="Password" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <input type="password" class="form-control" name="masterPassword"  placeholder="MasterPassword" required>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-100 mb-2">
+                    Log in
+                  </button>
+
+                  <div class="text-center mt-3">
+                    <p class="mb-1">Don't have an account?</p>
+                    <button type="button" class="btn btn-outline-danger" onclick="window.location.href='signin.html'">
+                      Create new
+                    </button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center bg-primary text-white">
+              <div class="p-4">
+                <h4 class="mb-3">Zero Trust, Full Control</h4>
+                <p class="small mb-0">
+                   A self hosted Pasword manager made in golang with Cli and WebGUI access.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
