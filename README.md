@@ -1,7 +1,7 @@
 # GoVault
 [![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://github.com/Scryv/GoVault/blob/main/LICENSE)  
 
-**GoVault** will be a Self Hosted application for storing passwords. It will be made in Golang and Sqlite and the liberaries Gorm and later on Gin with a web interface and uses SHA-512+salting and aes encryption (will change out sha-512 for argon2 later on). 
+**GoVault** will be a Self Hosted application for storing passwords. It will be made in Golang and Sqlite and the liberaries Gorm and later on net/http with a web interface and uses SHA-512+salting and aes encryption (will change out sha-512 for argon2 later on). 
 > Right now i am focusing on the Cobra CLI version net/http WebGui comes later.
 <img src="https://www.sdgscryv.xyz/images/images/GoVault.jpg" width="600px">
 
