@@ -3,7 +3,7 @@
 
 **GoVault** will be a Self Hosted application for storing passwords. It will be made in Golang and Sqlite and the liberaries Gorm and later on net/http with a web interface and uses SHA-512+salting and aes encryption (will change out sha-512 for argon2 later on). 
 > Right now i am focusing on the Cobra CLI version net/http WebGui comes later.
-<img src="https://www.sdgscryv.xyz/images/images/GoVault.jpg" width="600px">
+<img src="https://sdgscryv.xyz/static/GoVault.jpg" width="600px">
 
 ---
 ## Structure
