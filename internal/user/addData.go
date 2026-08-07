@@ -1,33 +1,21 @@
-package cmd
+package user
 
 import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/spf13/cobra"
-	"golang.org/x/term"
 	"os"
+	auth "scryv/GoVault/internal/auth"
+	db "scryv/GoVault/internal/database"
+	check "scryv/GoVault/internal/utils"
+
+	"golang.org/x/term"
 )
-
-// addPswdCmd represents the addPswd command
-var addPswdCmd = &cobra.Command{
-	Use:   "add",
-	Short: "Command to add Account/Password",
-	Long: `This command makes you able to add accounts usernames and passwords to your database
-		encrypted ofcourse :)`,
-	Run: func(cmd *cobra.Command, args []string) {
-		runAdd()
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(addPswdCmd)
-}
 
 func runAdd() {
 	var username string
-	initDB()
-	VaultDB.AutoMigrate(&Data{})
+	check.InitDB()
+	db.VaultDB.AutoMigrate(&db.Data{})
 
 	fmt.Println("Login: ")
 	fmt.Scanln(&username)
@@ -46,7 +34,7 @@ func runAdd() {
 		return
 	}
 
-	match := doPasswdMatch(storedHash, string(passwd), saltBytes)
+	match := auth.DoPasswdMatch(storedHash, string(passwd), saltBytes)
 	if match {
 		var choice int
 		var AddUser string
@@ -54,8 +42,8 @@ func runAdd() {
 		var service string
 		key := hash[:]
 
-		initUserDB(username)
-		UserDB.AutoMigrate(&UserData{})
+		check.InitUserDB(username)
+		db.UserDB.AutoMigrate(&db.UserData{})
 
 		fmt.Println("What do you want to add: [1]Username-password [2]email-password [3]email-passwd-username ")
 		fmt.Scanln(&choice)
@@ -73,8 +61,8 @@ func runAdd() {
 			}
 			AddUserByte := []byte(AddUser)
 			AddPasswdByte := AddPasswd
-			AddUser, _ = encrypt(AddUserByte, key)
-			AddPswdString, _ := encrypt(AddPasswdByte, key)
+			AddUser, _ = auth.Encrypt(AddUserByte, key)
+			AddPswdString, _ := auth.Encrypt(AddPasswdByte, key)
 			AddData(service, AddUser, AddPswdString, "")
 
 		case 2:
@@ -90,8 +78,8 @@ func runAdd() {
 			}
 			AddPasswdByte := AddPasswd
 			AddEmailByte := []byte(AddEmail)
-			AddPswdString, _ := encrypt(AddPasswdByte, key)
-			AddEmail, _ = encrypt(AddEmailByte, key)
+			AddPswdString, _ := auth.Encrypt(AddPasswdByte, key)
+			AddEmail, _ = auth.Encrypt(AddEmailByte, key)
 			AddData(service, "", AddPswdString, AddEmail)
 		case 3:
 			fmt.Println("What Website/App/Service: ")
@@ -109,9 +97,9 @@ func runAdd() {
 			AddUserByte := []byte(AddUser)
 			AddEmailByte := []byte(AddEmail)
 			AddPasswdByte := AddPasswd
-			AddUser, _ = encrypt(AddUserByte, key)
-			AddPswdString, _ := encrypt(AddPasswdByte, key)
-			AddEmail, _ = encrypt(AddEmailByte, key)
+			AddUser, _ = auth.Encrypt(AddUserByte, key)
+			AddPswdString, _ := auth.Encrypt(AddPasswdByte, key)
+			AddEmail, _ = auth.Encrypt(AddEmailByte, key)
 			AddData(service, AddUser, AddPswdString, AddEmail)
 		default:
 			fmt.Println("Please choose an existing option")
