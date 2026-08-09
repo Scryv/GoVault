@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+:root {
+    --secondary-color: #8b2635;
+    --main-color: #111318;
+    --text-color: #e8e6e3;
+    --title-font: "Google Sans", sans-serif;
+    --text-font: "Inter", sans-serif;
+    --special-font: "JetBrains Mono", monospace;
+}
+
+
+html{
+    scroll-behavior: smooth;
+    background-color: var(--main-color);
+    font-family: var(--text-font);
+    
+}
+.landing,
+.devRoadmap,
+#FAQ{
+    padding-top: 100px;
+    padding-bottom: 60px;
+    background-color: var(--main-color);
+    color: #e8e6e3;
+}
+.base-nav{
+    background-color: var(--main-color);
+    border-bottom: 1px solid #303946;
+    
+}
+.navbar-nav .nav-link.linky{
+    color: var(--text-color);
+}
+.container-fluid .test{
+        color: var(--text-color);
+
+}
+.btn1 a {
+    color: var(--main-color);
+}
+.btn2 a {
+    color: var(--text-color);
+}
+.btn1{
+    border: 2px solid;
+    background-color: var(--text-color);
+    border-radius: 40px;
+    padding: 15px;
+    color: var(--main-color);
+}
+.btn2{
+    border: 2px solid var(--text-color);
+    border-radius: 40px;
+    padding: 15px;
+}
+
+.btn1:hover,
+.btn2:hover{
+   background-color: var(--secondary-color);
+   border:2px solid var(--secondary-color);
+   transition: ease-in 0.3s;
+}
+.btn1 a:hover{
+    color: var(--text-color);
+}
+.Fsp{
+    font-family: var(--special-font);
+}
+.firstTitle{
+    font-family: var(--title-font);
+    font-size: 70px;
+    line-height: 1; 
+    font-weight: 600;
+  
+    
+}
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  background-color: var(--main-color);
+}
+.track {
+  display: inline-flex;
+  width: max-content;
+  animation: marquee 12s linear infinite;
+}
+
+.track span {
+  color: var(--text-color);
+  font-size: 4rem;
+  padding-right: 2rem;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.Fat{
+    color: var(--secondary-color);
+}
+
+.secTitle{
+    font-family: var(--title-font);
+    font-size: 40px;
+    line-height: 1; 
+    font-weight: 600;
+}
+.underHood{
+    padding-top: 100px;
+    padding-bottom: 60px;
+    background-color: var(--main-color);
+    color: #e8e6e3;
+}
+.card-title{
+    font-family: var(--special-font);
+    font-size: 30px;
+}
+.card-text{
+    font-family: var(--text-font);
+    font-size: 17px;
+}
+
+.dev-roadmap{
+    padding: 20px;
+    border: 2px solid #303946;
+    border-radius: 20px;
+}
+.list-group .list-group-item{
+    background-color: var(--main-color);
+    color: var(--text-color);
+}

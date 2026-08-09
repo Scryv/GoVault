@@ -1,1 +1,2 @@
-.env
+/GoVault/internal/api/.env
+extras/
