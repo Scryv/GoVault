@@ -15,9 +15,10 @@ var tkk []byte
 var ygap string
 
 func ApiStart() {
-	err := godotenv.Load(".env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
+		log.Fatal(err)
 	}
 
 	tkk := []byte(os.Getenv("TKN_K"))
@@ -44,26 +45,27 @@ func ApiStart() {
 func handleRoot(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("access_token") //looks if there is cookie access_token
 	if err != nil {
-		index := template.Must(template.ParseFiles("web/templates/index.html"))
+		index := template.Must(template.ParseFiles("internal/api/web/templates/index.html"))
 		index.Execute(w, nil)
 		return
 	}
-	err = auth.VerifyToken(cookie.Value) //validates cookie
+	usr, err := auth.VerifyToken(cookie.Value) //validates cookie
 	if err != nil {
 		log.Println(err)
 		http.Redirect(w, r, "/error", http.StatusSeeOther) //invalid goes to error
 		return
 	}
+	log.Println(usr)
 	log.Println("Sir There has been a cookie detected") //else will be able to log in
 }
 
 func login(w http.ResponseWriter, _ *http.Request) {
-	login := template.Must(template.ParseFiles("web/templates/login.html"))
+	login := template.Must(template.ParseFiles("internal/api/web/templates/login.html"))
 	login.Execute(w, nil)
 }
 
 func signup(w http.ResponseWriter, _ *http.Request) {
-	signup := template.Must(template.ParseFiles("web/templates/signup.html"))
+	signup := template.Must(template.ParseFiles("internal/api/web/templates/signup.html"))
 	signup.Execute(w, nil)
 }
 
