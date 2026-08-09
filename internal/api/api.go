@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"fmt"
@@ -14,8 +14,8 @@ import (
 var tkk []byte
 var ygap string
 
-func main() {
-	err := godotenv.Load()
+func ApiStart() {
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
