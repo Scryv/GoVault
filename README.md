@@ -1,84 +1,44 @@
-# GoVault
-[![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://github.com/Scryv/GoVault/blob/main/LICENSE)  
+# GoVault 
 
-**GoVault** will be a Self Hosted application for storing passwords. It will be made in Golang and Sqlite and the liberaries Gorm and later on net/http with a web interface and uses SHA-512+salting and aes encryption (will change out sha-512 for argon2 later on). 
-> Right now i am focusing on the Cobra CLI version net/http WebGui comes later.
-<img src="https://sdgscryv.xyz/img/GoVault.png" width="600px">
+[![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://github.com/Scryv/GoVault/blob/main/LICENSE)
+
+**GoVault** is a SelfHosted password manager offering both a terminal TUI and a lightweight web interface designed for privacy and for being lightweight
+
+> *Your passwords stay between you and Gopher.*
+
+<img src="https://sdgscryv.xyz/img/GoVault.png" width="600px" alt="GoVault Logo">
 
 ---
-## Structure
-<pre>
-          ┌─────────────────────────┐
-          │        main.go          │
-          └───────────┬─────────────┘
-                     │
-                     ▼
-           ┌─────────────────────────┐
-           │        cmd/root.go      │
-           └─────────┬───────────────┘
-                     │
-      ┌──────────────┴────────────────┐
-      │                               │
-      ▼                               ▼
-┌──────────────┐                ┌───────────────┐
-│ create.go    │                │ govault.go    │
-│ (Add new     │                │ (Login &      │
-│ user)        │                │view passwords)│
-└─────┬────────┘                └──────┬────────┘
-      │                                 │
-      │                                 ▼
-      │                       ┌────────────────┐
-      │                       │ add.go    │
-      │                       │ (Add accounts/ │
-      │                       │ passwords)     │
-      │                       └──────┬─────────┘
-      │                              │
-      ▼                              ▼
-┌───────────────────────────┐  ┌─────────────────────────────┐
-│ database.go               │  │ database.go                 │
-│ - VaultDB: stores users   │  │ - UserDB: per-user DB       │
-│ - UserData/Data structs   │  │ - Data/UserData structs     │
-│ - Functions: initDB,      │  │ - Functions: AddData,       │
-│   initUserDB, createPost, │  │   encrypt/decrypt, hash     │
-│   getUser, doPasswdMatch  │  │   password                  │
-│ - Hashing & Salting       │  │ - AES Encryption/Decryption │
-└───────────────────────────┘  └─────────────────────────────┘
-</pre>
-Database folder gets stored in /home/user/
 
-## How to install
-1. `git clone https://github.com/Scryv/GoVault.git`
-2. `cd GoVault`
-3. `chmod +x install.sh`
-4. `sudo ./install.sh`
-5. `GoVault`<br>
+## Features and Structure
 
-And enjoy :)
+### Tech Stack
+![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) 
+![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white) 
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white) 
+![HTMX](https://img.shields.io/badge/HTMX-%233366CC.svg?style=for-the-badge&logo=htmx&logoColor=white)
 
-## Features
+* **Privacy Design:** Your primary secret stays hidden on your own device and is never exposed as readable text over the network.
+* **Rust Cryptography Core:** authentication and encryption stuff is written in Rust for safety and speed.
+* **Go Backend and Web Server:** Built on Golang standard `net/http` lib paired with **HTMX** templates for a light web UI.
+* **Terminal UI:** Terminal interface built for getting quick access to your passwords offline without having to go to the web UI
+* **Secure Storage:** Uses embedded **SQLite** for local vault management (stored under `~/.govault` or `/home/user/`), employing AES encryption for vault entries and salted hashing (migrating from SHA-512 to Argon2).
 
-### Info about tool `GoVault`
-will just display info about tool and all the commands there are available with
-a tiny explanation about each command
+---
 
-### Create `GoVault create`
-will ask for an **username** and a **password** and will take the password generate 
-a **random** salt and hash the password together with that salt then save it to a local **SQLite** database
+## Project Structure
 
-### add `GoVault add`
-Will ask for **Username** and your accounts **password** after auth it will ask what option so 
-1. Username-Password
-2. Email-Password
-3. Email-Password-Username<br>
-
-you will fill those in and it will encrypt it and store it in your user his db
-
-### govault `GoVault vault`
-Will ask for a **login** and **password** then will search the **SQLite** database for your **username** then take its hash and hash your **password** with it and if its a match it will let you log in
-and display the other database with stored **accounts** and **passwords** that will be unlocked by your **masterPasswd**
-
-
-## Working on adding
-
-#### Logs
-#### Maybe TUI with bubble tea
+```text
+GoVault/
+├── cmd/
+│   └── main.go           • main files
+├── internal/
+│   ├── api/
+│   │   ├── web/          • HTMX templates and static assets(pictures and css probs)
+│   │   └── api.go        • HTTP handlers routes and most of the logic
+│   ├── auth/             • Cryptographic operations and token auth
+│   ├── database/         • SQLite connection and migrations
+│   ├── user/             • User management and vault actions
+│   └── utils/            • Shared helper functions
+├── .gitignore
+└── LICENSE
