@@ -6,7 +6,7 @@
 
 > *Your passwords stay between you and Gopher.*
 
-<img src="https://sdgscryv.xyz/img/GoVault.png" width="600px" alt="GoVault Logo">
+<img src="https://sdgscryv.xyz/img/GoVault.png" width="300px" alt="GoVault Logo">
 
 ---
 
