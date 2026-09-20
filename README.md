@@ -19,7 +19,7 @@
 ![HTMX](https://img.shields.io/badge/HTMX-%233366CC.svg?style=for-the-badge&logo=htmx&logoColor=white)
 
 * **Privacy Design:** Your primary secret stays hidden on your own device and is never exposed as readable text over the network.
-* **Rust Cryptography Core:** authentication and encryption stuff is written in Rust for safety and speed.
+* **Hidden Features:** Rust script handles some optional features like .env password refresher etc
 * **Go Backend and Web Server:** Built on Golang standard `net/http` lib paired with **HTMX** templates for a light web UI.
 * **Terminal UI:** Terminal interface built for getting quick access to your passwords offline without having to go to the web UI
 * **Secure Storage:** Uses embedded **SQLite** for local vault management (stored under `~/.govault` or `/home/user/`), employing AES encryption for vault entries and salted hashing (migrating from SHA-512 to Argon2).
