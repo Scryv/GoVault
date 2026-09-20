@@ -40,5 +40,8 @@ GoVault/
 │   ├── database/         • SQLite connection and migrations
 │   ├── user/             • User management and vault actions
 │   └── utils/            • Shared helper functions
+├── rust/
+│   ├── src/
+│   │   └── main.rs       • Handles .env passwd Randomizer
 ├── .gitignore
 └── LICENSE
